@@ -225,7 +225,13 @@ public class SearchAndSort {
 			case "binary":
 				System.out.print("Please enter the target value.\n\t> ");
 				if (string) {
-					
+					String target = in.nextLine();
+					int index = sas.binary(stringList, target);
+					if (index == -1) {
+						System.out.println("This string did not appear in the list.");
+					} else {
+						System.out.println("This string appeared in the list at index " + index + " after being sorted.");
+					}
 				} else {
 					String num = in.nextLine();
 					while (!isNumeric(num)) {
@@ -237,12 +243,6 @@ public class SearchAndSort {
 					if (index == -1) {
 						System.out.println("This integer did not appear in the list.");
 					} else {
-						for (int i = 0; i < intList.size(); i++) {
-							if (intList.get(i) == target) {
-								index = i;
-								i = intList.size();
-							}
-						}
 						System.out.println("This integer appeared in the list at index " + index + " after being sorted.");
 					}
 				}
@@ -252,15 +252,34 @@ public class SearchAndSort {
 	}
 	
 	public int binary(ArrayList<Integer> data, int target) {
-		ArrayList<Integer> copy = selection(data, data.get(0));
+		data = selection(data, data.get(0));
 		int start = 0;
-		int end = copy.size() - 1;
+		int end = data.size() - 1;
 		int mid = (end - start) / 2;
 		while (end >= start) {
-			if (copy.get(mid) > target) {
+			if (data.get(mid) > target) {
 				end = mid - 1;
 				mid = (end - start) / 2;
-			} else if (copy.get(mid) < target) {
+			} else if (data.get(mid) < target) {
+				start = mid = 1;
+				mid = (end - start) / 2;
+			} else {
+				return mid;
+			}
+		}
+		return -1;
+	}
+	
+	public int binary(ArrayList<String> data, String target) {
+		data = selection(data, data.get(0));
+		int start = 0;
+		int end = data.size() - 1;
+		int mid = (end - start) / 2;
+		while (end >= start) {
+			if (data.get(mid).compareTo(target) > 0) {
+				end = mid - 1;
+				mid = (end - start) / 2;
+			} else if (data.get(mid).compareTo(target) < 0) {
 				start = mid = 1;
 				mid = (end - start) / 2;
 			} else {
